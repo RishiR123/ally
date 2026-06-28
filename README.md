@@ -20,8 +20,12 @@ Ally is built in Python and connects to OpenAI-compatible endpoints, making it p
 
 You can install Ally globally on macOS or Linux using our installation script. This will set up an isolated environment and create an executable in `~/.local/bin`.
 
+Because this repository is **private**, you cannot use a simple `curl` command to download the script. Instead, please clone the repository and run the script locally:
+
 ```bash
-curl -fsSL https://raw.githubusercontent.com/RishiR123/ally/main/install.sh | bash
+git clone https://github.com/RishiR123/ally.git
+cd ally
+./install.sh
 ```
 
 **Important:** Make sure `~/.local/bin` is in your system's `PATH`. If it isn't, add this to your `~/.zshrc` or `~/.bashrc`:
