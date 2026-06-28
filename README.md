@@ -18,58 +18,31 @@ Ally is built in Python and connects to OpenAI-compatible endpoints, making it p
 
 ## Installation
 
-### 1. Clone the repository
+You can install Ally globally on macOS or Linux using our installation script. This will set up an isolated environment and create an executable in `~/.local/bin`.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ally.git
-cd ally
+curl -fsSL https://raw.githubusercontent.com/RishiR123/ally/main/install.sh | bash
 ```
-*(Replace `YOUR_USERNAME` with your actual GitHub username)*
 
-### 2. Create a Virtual Environment (Recommended)
-
+**Important:** Make sure `~/.local/bin` is in your system's `PATH`. If it isn't, add this to your `~/.zshrc` or `~/.bashrc`:
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+export PATH="$HOME/.local/bin:$PATH"
 ```
 
-### 3. Install the package
+## Setup & Usage
 
-Install the package in editable mode so you can easily modify it:
-
-```bash
-pip install -e .
-```
-
-## Configuration
-
-Ally uses a `.env` file for configuration.
-
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
-
-2. Open the `.env` file and configure it to point to your AI provider. For example, if you are using LM Studio locally:
-   ```env
-   ALLY_API_BASE_URL=http://localhost:1234/v1
-   ALLY_API_KEY=lm-studio
-   ALLY_MODEL=local-model
-   ```
-   *Note: Even for local providers, an API key is sometimes required by the OpenAI client, so a dummy string like `lm-studio` is used.*
-
-## Usage
-
-Once installed and configured, you can start Ally by simply running:
+To start Ally and run the interactive setup, simply type:
 
 ```bash
 ally
 ```
 
-Or, alternatively, you can run the module directly:
+On your first run, Ally will interactively prompt you for your API provider details (like your LM Studio URL and model name). These settings are saved globally in `~/.ally/.env`.
+
+To update your configuration later, you can run:
 
 ```bash
-python3 main.py
+ally --setup
 ```
 
 Type your requests to Ally in the prompt. Type `exit` or `quit` to close the agent.

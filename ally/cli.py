@@ -1,10 +1,12 @@
 import sys
+import argparse
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.prompt import Prompt
 
 from .agent import AllyAgent
+from .setup import setup, is_configured
 
 console = Console()
 
@@ -18,7 +20,24 @@ Type your request below. Type `exit` or `quit` to stop.
     console.print(Panel(Markdown(welcome_text), style="bold blue", expand=False))
 
 def main():
+    parser = argparse.ArgumentParser(description="Ally CLI Coding Agent")
+    parser.add_argument("--setup", action="store_true", help="Run the interactive setup")
+    args = parser.parse_args()
+
+    if args.setup:
+        setup()
+        return
+
+    if not is_configured():
+        console.print("[yellow]It looks like Ally is not configured yet. Running setup...[/yellow]\n")
+        setup()
+        # Reload env vars after setup
+        from .config import load_dotenv, get_config_path
+        load_dotenv(get_config_path(), override=True)
+        
     print_welcome()
+    
+    # We initialize the agent here AFTER setup and dotenv reload so it gets the right config
     agent = AllyAgent()
     
     while True:

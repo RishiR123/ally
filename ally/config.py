@@ -1,8 +1,11 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+def get_config_path():
+    return os.path.expanduser("~/.ally/.env")
+
+# Load environment variables from global .env file
+load_dotenv(get_config_path())
 
 class Config:
     """Configuration settings for Ally."""
