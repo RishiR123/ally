@@ -12,7 +12,14 @@ class Config:
     
     @classmethod
     def get_base_url(cls):
-        return os.getenv("ALLY_API_BASE_URL", "https://api.openai.com/v1")
+        url = os.getenv("ALLY_API_BASE_URL", "https://api.openai.com/v1")
+        # Automatically append /v1 for local models if it's missing (e.g. for LM Studio or Ollama)
+        if url and not url.endswith("/v1") and "api.openai.com" not in url:
+            if url.endswith("/"):
+                url += "v1"
+            else:
+                url += "/v1"
+        return url
 
     @classmethod
     def get_api_key(cls):
