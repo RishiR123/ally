@@ -49,6 +49,22 @@ To update your configuration later, you can run:
 ally --setup
 ```
 
+## Uninstallation
+
+To completely remove Ally and its configuration from your system, you can run the uninstall script from the repository:
+
+```bash
+cd ally
+./uninstall.sh
+```
+
+Alternatively, you can manually remove the installation directory and the executable:
+
+```bash
+rm -rf ~/.ally
+rm ~/.local/bin/ally
+```
+
 Type your requests to Ally in the prompt. Type `exit` or `quit` to close the agent.
 
 ## Tools Available
