@@ -10,17 +10,27 @@ load_dotenv(get_config_path())
 class Config:
     """Configuration settings for Ally."""
     
-    # Provider settings (Defaults to OpenAI if not set, but can be LM Studio e.g. http://localhost:1234/v1)
-    BASE_URL = os.getenv("ALLY_API_BASE_URL", "https://api.openai.com/v1")
-    API_KEY = os.getenv("ALLY_API_KEY", "not-needed-for-local")
-    MODEL = os.getenv("ALLY_MODEL", "gpt-3.5-turbo") # Default model name, override in .env for local
+    @classmethod
+    def get_base_url(cls):
+        return os.getenv("ALLY_API_BASE_URL", "https://api.openai.com/v1")
+
+    @classmethod
+    def get_api_key(cls):
+        return os.getenv("ALLY_API_KEY", "not-needed-for-local")
+
+    @classmethod
+    def get_model(cls):
+        return os.getenv("ALLY_MODEL", "gpt-3.5-turbo")
 
     @classmethod
     def get_openai_client_kwargs(cls):
         """Returns kwargs suitable for initializing the OpenAI client."""
+        base_url = cls.get_base_url()
+        api_key = cls.get_api_key()
+        
         kwargs = {
-            "api_key": cls.API_KEY,
+            "api_key": api_key,
         }
-        if cls.BASE_URL and cls.BASE_URL != "https://api.openai.com/v1":
-            kwargs["base_url"] = cls.BASE_URL
+        if base_url and base_url != "https://api.openai.com/v1":
+            kwargs["base_url"] = base_url
         return kwargs

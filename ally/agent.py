@@ -8,7 +8,7 @@ from .tools import TOOLS_SCHEMA, TOOL_FUNCTIONS
 class AllyAgent:
     def __init__(self):
         self.client = OpenAI(**Config.get_openai_client_kwargs())
-        self.model = Config.MODEL
+        self.model = Config.get_model()
         
         # System prompt defines the persona and rules
         self.system_prompt = """You are Ally, a helpful and powerful CLI coding agent created by Orionac.
