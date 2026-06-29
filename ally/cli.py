@@ -31,9 +31,12 @@ def main():
     if not is_configured():
         console.print("[yellow]It looks like Ally is not configured yet. Running setup...[/yellow]\n")
         setup()
-        # Reload env vars after setup
-        from .config import load_dotenv, get_config_path
-        load_dotenv(get_config_path(), override=True)
+        # Reload config after setup
+        from .config import Config
+        Config.load()
+        
+    from .config import Config
+    Config.load()
         
     print_welcome()
     
@@ -75,6 +78,8 @@ def main():
             break
         except EOFError:
             break
+            
+    agent.cleanup()
 
 if __name__ == "__main__":
     main()

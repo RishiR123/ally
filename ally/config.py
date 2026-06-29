@@ -1,19 +1,23 @@
 import os
-from dotenv import load_dotenv
+import yaml
 
 def get_config_path():
-    return os.path.expanduser("~/.ally/.env")
-
-# Load environment variables from global .env file
-load_dotenv(get_config_path())
+    return os.path.expanduser("~/.ally/config.yaml")
 
 class Config:
     """Configuration settings for Ally."""
-    
+    _config_data = {}
+
+    @classmethod
+    def load(cls):
+        path = get_config_path()
+        if os.path.exists(path):
+            with open(path, 'r') as f:
+                cls._config_data = yaml.safe_load(f) or {}
+
     @classmethod
     def get_base_url(cls):
-        url = os.getenv("ALLY_API_BASE_URL", "https://api.openai.com/v1")
-        # Automatically append /v1 for local models if it's missing (e.g. for LM Studio or Ollama)
+        url = cls._config_data.get('llm', {}).get('base_url', "https://api.openai.com/v1")
         if url and not url.endswith("/v1") and "api.openai.com" not in url:
             if url.endswith("/"):
                 url += "v1"
@@ -23,11 +27,15 @@ class Config:
 
     @classmethod
     def get_api_key(cls):
-        return os.getenv("ALLY_API_KEY", "not-needed-for-local")
+        return cls._config_data.get('llm', {}).get('api_key', "not-needed-for-local")
 
     @classmethod
     def get_model(cls):
-        return os.getenv("ALLY_MODEL", "gpt-3.5-turbo")
+        return cls._config_data.get('llm', {}).get('model', "gpt-3.5-turbo")
+
+    @classmethod
+    def get_mcp_servers(cls):
+        return cls._config_data.get('mcp_servers', {})
 
     @classmethod
     def get_openai_client_kwargs(cls):
